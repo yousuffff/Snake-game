@@ -6,7 +6,7 @@
 :root {
   /* background colors */
   --bg-primary-color: #292929;
-  --bg-secondary-color: #3a3a3a;
+  --bg-secondary-color: #fdfdfc;
 
   /* text colors */
   --text-primary-color: #f5f5f5;
@@ -66,11 +66,14 @@ section {
   border: 1px solid var(--border-color);
   flex-grow: 1;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
-  grid-template-rows: repeat(auto-fill, minmax(30px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+  grid-template-rows: repeat(auto-fill, minmax(50px, 1fr));
 }
 .block {
-  height: 30px;
-  width: 30px;
+  /* height: 30px;
+  width: 30px; */
   border: 1px solid var(--border-color);
+}
+.snake{
+  background: var(--bg-secondary-color);
 }
