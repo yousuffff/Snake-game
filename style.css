@@ -74,6 +74,11 @@ section {
   width: 30px; */
   border: 1px solid var(--border-color);
 }
-.snake{
+.snake {
   background: var(--bg-secondary-color);
+  border-radius: 20%;
+}
+.food {
+  background: rgb(242, 116, 116);
+  border-radius: 50%;
 }
