@@ -9,28 +9,39 @@
 </head>
 
 <body>
-  <section>
-    <div class="infos">
-      <div class="info">
-        <h3>High Score:
-          <span>0</span>
-        </h3>
+  <main>
+    <section>
+      <div class="infos">
+        <div class="info">
+          <h3>High Score:
+            <span>0</span>
+          </h3>
+        </div>
+        <div class="info">
+          <h3>Score:
+            <span id="score">0</span>
+          </h3>
+        </div>
+        <div class="info">
+          <h3>Time:
+            <span>00-00</span>
+          </h3>
+        </div>
       </div>
-      <div class="info">
-        <h3>Score:
-          <span id="score">0</span>
-        </h3>
-      </div>
-      <div class="info">
-        <h3>Time:
-          <span>00-00</span>
-        </h3>
-      </div>
-    </div>
-    <div class="board">
+      <div class="board">
 
+      </div>
+    </section>
+    <div class="modal">
+      <div class="modal-startgame">
+        <h2>Welcome to snake Game</h2>
+        <button class="btn btn-start" id="start-btn">
+          Start Game
+        </button>
+      </div>
     </div>
-  </section>
+  </main>
+
   <script src="app.js"></script>
 </body>
 

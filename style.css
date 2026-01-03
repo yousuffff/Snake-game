@@ -40,6 +40,10 @@ body {
   background-color: #292929;
   color: #f5f5f5;
 }
+main {
+  height: 100vh;
+  width: 100vw;
+}
 section {
   height: 100%;
   display: flex;
@@ -81,4 +85,38 @@ section {
 .food {
   background: rgb(242, 116, 116);
   border-radius: 50%;
+}
+.modal {
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0;
+  background-color: #3e3a3a73;
+  backdrop-filter: blur(4px);
+}
+.modal .modal-startgame {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-lg);
+}
+.btn {
+  padding: var(--space-md) var(--space-lg);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  background-color: var(--bg-secondary-color);
+  color: var(--bg-primary-color);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.btn:hover {
+  background-color: #e0e0e0;
+  /* transform: scale(1.1); */
+}
+.btn:active {
+  transform: scale(0.9);
 }

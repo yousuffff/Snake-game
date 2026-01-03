@@ -1,5 +1,7 @@
 const board = document.querySelector(".board");
 let scoreBoard = document.querySelector("#score");
+const startBtn = document.querySelector("#start-btn");
+const modal = document.querySelector(".modal");
 
 const blockHeight = 50;
 const blockWidth = 50;
@@ -73,10 +75,6 @@ function renderSnake() {
   }
 }
 
-intervalId = setInterval(() => {
-  renderSnake();
-}, 500);
-
 // Game over logic here
 addEventListener("keydown", (e) => {
   console.log(e.key);
@@ -89,4 +87,11 @@ addEventListener("keydown", (e) => {
   } else if (e.key === "ArrowDown") {
     direction = "down";
   }
+});
+
+startBtn.addEventListener("click", () => {
+  modal.style.display = "none";
+  intervalId = setInterval(() => {
+    renderSnake();
+  }, 300);
 });
