@@ -90,6 +90,9 @@ section {
   height: 100vh;
   width: 100vw;
   position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   top: 0;
   background-color: #3e3a3a73;
   backdrop-filter: blur(4px);
@@ -102,6 +105,7 @@ section {
   justify-content: center;
   align-items: center;
   gap: var(--space-lg);
+  /* display: none; */
 }
 .btn {
   padding: var(--space-md) var(--space-lg);
@@ -119,4 +123,26 @@ section {
 }
 .btn:active {
   transform: scale(0.9);
+}
+
+.modal-gameover {
+  height: 30vh;
+  width: 30vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-lg);
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  background: #34333387;
+  
+  display: none;
+}
+.btn-restart{
+  background: red;
+  color: var(--text-primary-color);
+}
+.btn-restart:hover {
+  background-color: #b30000;
 }
