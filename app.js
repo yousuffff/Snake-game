@@ -8,8 +8,8 @@ const gameoverModal = document.querySelector(".modal-gameover");
 const modalstart = document.querySelector(".modal-startgame");
 const modal = document.querySelector(".modal");
 
-const blockHeight = 50;
-const blockWidth = 50;
+const blockHeight = 30;
+const blockWidth = 30;
 const cols = Math.floor(board.clientWidth / blockWidth);
 const rows = Math.floor(board.clientHeight / blockHeight);
 
@@ -23,6 +23,14 @@ let autodirection = ["up", "down", "left", "right"];
 let direction = "left";
 let intervalId = null;
 let timeIntervalId = null;
+let speedIncreaseIntervalId = null;
+let speed = 300;
+const opposite = {
+  up: "down",
+  down: "up",
+  left: "right",
+  right: "left",
+};
 
 let snake = [
   {
@@ -35,20 +43,20 @@ let food = {
   x: Math.floor(Math.random() * cols),
   y: Math.floor(Math.random() * rows),
 };
-console.log(food);
+// console.log(food);
 
 for (let row = 0; row < rows; row++) {
   for (let col = 0; col < cols; col++) {
     const block = document.createElement("div");
     block.classList.add("block");
     board.appendChild(block);
-    block.innerText = `${col},${row}`;
+    // block.innerText = `${col},${row}`;
     blocks[`${col}-${row}`] = block;
   }
 }
 
 function renderSnake() {
-  console.log(snake);
+  // console.log(snake);
   let head = null;
   blocks[`${food.x}-${food.y}`].classList.add("food");
 
@@ -63,6 +71,15 @@ function renderSnake() {
   }
 
   if (head.x < 0 || head.x >= cols || head.y < 0 || head.y >= rows) {
+    clearInterval(intervalId);
+    clearInterval(timeIntervalId);
+    time = "00-00";
+    modal.style.display = "flex";
+    gameoverModal.style.display = "flex";
+    return;
+  }
+
+  if (snake.some((segment) => segment.x === head.x && segment.y === head.y)) {
     clearInterval(intervalId);
     clearInterval(timeIntervalId);
     time = "00-00";
@@ -89,25 +106,47 @@ function renderSnake() {
     }
     scoreBoard.innerText = score;
     blocks[`${food.x}-${food.y}`].classList.remove("food");
-    food.x = Math.floor(Math.random() * cols);
-    food.y = Math.floor(Math.random() * rows);
+
+    food = randomFood();
 
     snake.push({ ...snake[snake.length - 1] });
   }
 }
-
+function randomFood() {
+  let pos;
+  do {
+    pos = {
+      x: Math.floor(Math.random() * cols),
+      y: Math.floor(Math.random() * rows),
+    };
+  } while (snake.some((seg) => seg.x === pos.x && seg.y === pos.y));
+  return pos;
+}
 // Game over logic here
 addEventListener("keydown", (e) => {
-  console.log(e.key);
-  if (e.key === "ArrowLeft") {
-    direction = "left";
-  } else if (e.key === "ArrowRight") {
-    direction = "right";
-  } else if (e.key === "ArrowUp") {
-    direction = "up";
-  } else if (e.key === "ArrowDown") {
-    direction = "down";
-  }
+  // console.log(e.key);
+
+  const keyMap = {
+    ArrowUp: "up",
+    ArrowDown: "down",
+    ArrowLeft: "left",
+    ArrowRight: "right",
+  };
+  const newDirection = keyMap[e.key];
+  if (!newDirection) return;
+
+  if (opposite[direction] === newDirection) return;
+  direction = newDirection;
+
+  // if (e.key === "ArrowLeft") {
+  //   direction = "left";
+  // } else if (e.key === "ArrowRight") {
+  //   direction = "right";
+  // } else if (e.key === "ArrowUp") {
+  //   direction = "up";
+  // } else if (e.key === "ArrowDown") {
+  //   direction = "down";
+  // }
 });
 
 const updateTime = () => {
@@ -130,10 +169,15 @@ const startgame = () => {
 
   intervalId = setInterval(() => {
     renderSnake();
-  }, 300);
+  }, speed);
 };
+
+const speedinterval = setInterval(() => {
+  speed -= 10;
+}, 10000);
 const restartgame = () => {
   score = 0;
+  speed = 300;
   scoreBoard.innerText = score;
   highScore = localStorage.getItem("highScore") || 0;
   highScoreBoard.innerText = highScore;
