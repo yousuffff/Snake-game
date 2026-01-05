@@ -13,7 +13,7 @@ const rows = Math.floor(board.clientHeight / blockHeight);
 
 let blocks = [];
 let score = 0;
-
+let autodirection = ["up", "down", "left", "right"];
 let direction = "left";
 let intervalId = null;
 
@@ -56,9 +56,10 @@ function renderSnake() {
   }
 
   if (head.x < 0 || head.x >= cols || head.y < 0 || head.y >= rows) {
+    clearInterval(intervalId);
     modal.style.display = "flex";
     gameoverModal.style.display = "flex";
-    clearInterval(intervalId);
+    return;
   }
   snake.forEach((segment) => {
     blocks[`${segment.x}-${segment.y}`].classList.remove("snake");
@@ -103,8 +104,24 @@ const startgame = () => {
   }, 300);
 };
 const restartgame = () => {
+  blocks[`${food.x}-${food.y}`].classList.remove("food");
+  snake.forEach((segment) => {
+    blocks[`${segment.x}-${segment.y}`].classList.remove("snake");
+  });
+
   modal.style.display = "none";
   gameoverModal.style.display = "none";
+  direction = autodirection[Math.floor(Math.random() * 4)];
+  snake = [
+    {
+      x: Math.floor(Math.random() * cols),
+      y: Math.floor(Math.random() * rows),
+    },
+  ];
+  food = {
+    x: Math.floor(Math.random() * cols),
+    y: Math.floor(Math.random() * rows),
+  };
   intervalId = setInterval(() => {
     renderSnake();
   }, 300);
