@@ -58,7 +58,6 @@ for (let row = 0; row < rows; row++) {
 function renderSnake() {
   // console.log(snake);
   let head = null;
-  blocks[`${food.x}-${food.y}`].classList.add("food");
 
   if (direction === "up") {
     head = { x: snake[0].x, y: snake[0].y - 1 };
@@ -71,20 +70,12 @@ function renderSnake() {
   }
 
   if (head.x < 0 || head.x >= cols || head.y < 0 || head.y >= rows) {
-    clearInterval(intervalId);
-    clearInterval(timeIntervalId);
-    time = "00-00";
-    modal.style.display = "flex";
-    gameoverModal.style.display = "flex";
+    gameOver();
     return;
   }
 
   if (snake.some((segment) => segment.x === head.x && segment.y === head.y)) {
-    clearInterval(intervalId);
-    clearInterval(timeIntervalId);
-    time = "00-00";
-    modal.style.display = "flex";
-    gameoverModal.style.display = "flex";
+    gameOver();
     return;
   }
   snake.forEach((segment) => {
@@ -108,6 +99,7 @@ function renderSnake() {
     blocks[`${food.x}-${food.y}`].classList.remove("food");
 
     food = randomFood();
+    blocks[`${food.x}-${food.y}`].classList.add("food");
 
     snake.push({ ...snake[snake.length - 1] });
   }
@@ -149,6 +141,7 @@ addEventListener("keydown", (e) => {
   // }
 });
 
+///timer///
 const updateTime = () => {
   let [min, sec] = time.split("-").map(Number);
   if (sec === 59) {
@@ -163,21 +156,33 @@ const updateTime = () => {
   timeBoard.innerText = time;
 };
 const startgame = () => {
+  startBtn.disabled = true;
   modalstart.style.display = "none";
   modal.style.display = "none";
+  clearInterval(timeIntervalId);
   timeIntervalId = setInterval(() => updateTime(), 1000);
-
-  intervalId = setInterval(() => {
-    renderSnake();
-  }, speed);
+  speed = 300;
+  startSnakeLoop();
+  startSpeedIncrease();
+  // intervalId = setInterval(() => {
+  //   renderSnake();
+  // }, speed);
 };
 
-const speedinterval = setInterval(() => {
-  speed -= 10;
-}, 10000);
+function startSnakeLoop() {
+  clearInterval(intervalId);
+  intervalId = setInterval(renderSnake, speed);
+}
+
 const restartgame = () => {
+  startBtn.disabled = false;
+  clearInterval(intervalId);
+  clearInterval(timeIntervalId);
+  clearInterval(speedIncreaseIntervalId);
   score = 0;
   speed = 300;
+  time = "00-00";
+  timeBoard.innerText = time;
   scoreBoard.innerText = score;
   highScore = localStorage.getItem("highScore") || 0;
   highScoreBoard.innerText = highScore;
@@ -195,13 +200,36 @@ const restartgame = () => {
       y: Math.floor(Math.random() * rows),
     },
   ];
-  food = {
-    x: Math.floor(Math.random() * cols),
-    y: Math.floor(Math.random() * rows),
-  };
-  intervalId = setInterval(() => {
-    renderSnake();
-  }, 300);
+  food = randomFood();
+  blocks[`${food.x}-${food.y}`].classList.add("food");
+  // intervalId = setInterval(() => {
+  //   renderSnake();
+  // }, 300);
+  startSnakeLoop();
+  startSpeedIncrease();
 };
+function gameOver() {
+  clearInterval(intervalId);
+  clearInterval(timeIntervalId);
+  clearInterval(speedIncreaseIntervalId);
+
+  time = "00-00";
+  timeBoard.innerText = time;
+
+  modal.style.display = "flex";
+  gameoverModal.style.display = "flex";
+}
+function startSpeedIncrease() {
+  clearInterval(speedIncreaseIntervalId);
+
+  speedIncreaseIntervalId = setInterval(() => {
+    if (speed > 80) {
+      speed -= 20;
+      startSnakeLoop();
+      console.log("Speed increased:", speed);
+    }
+  }, 10000);
+}
+
 startBtn.addEventListener("click", startgame);
 restartBtn.addEventListener("click", restartgame);
