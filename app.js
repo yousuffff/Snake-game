@@ -162,6 +162,7 @@ const startgame = () => {
   clearInterval(timeIntervalId);
   timeIntervalId = setInterval(() => updateTime(), 1000);
   speed = 300;
+  blocks[`${food.x}-${food.y}`].classList.add("food");
   startSnakeLoop();
   startSpeedIncrease();
   // intervalId = setInterval(() => {
